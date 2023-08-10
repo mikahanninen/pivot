@@ -1,6 +1,6 @@
 *** Comments ***
 1. Create a pivot table
-2. Remove duplicates values
+2. Remove duplicate values
 3. Adding more columns to the pivot table
 4. create a formula in that column
 5. filter the pivot table
@@ -9,7 +9,6 @@
 
 *** Settings ***
 Library     ExtendedExcel    autoexit=${FALSE}    WITH NAME    excel
-Library     CustomOutlook    autoexit=${FALSE}    WITH NAME    out
 Library     utils.py
 
 
@@ -26,8 +25,6 @@ Minimal task
     @{pt_fields}=    Create List    @{EMPTY}    # price
     Create Pivot Table    data    test    pivoting    ${pt_rows}    ${pt_cols}    ${pt_filters}    ${pt_fields}
     Save Excel
-    # Quit Application
-    out.Open Application
-    sleep    5s
-    out.Quit Application
+    ${tables}=    Get Pivot Tables
+    Log To Console    ${tables}
     Log    Done.

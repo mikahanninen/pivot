@@ -5,6 +5,11 @@ import gc
 from enum import Enum
 from dataclasses import dataclass
 from utils import create_test_excel_file
+import logging
+
+
+def log_type_and_dir(object):
+    logging.warning(f"{type(object)} {dir(object)}")
 
 
 @dataclass
@@ -107,6 +112,16 @@ class ExtendedExcel(Application):
         self.worksheet.PivotTables(pivot_name).ColumnGrand = True
         return pc
 
+    def get_pivot_tables(self):
+        pivot_tables = {}
+
+        # TODO. Get tables for all worksheet (in the workbook)
+        tables = self.worksheet.PivotTables()
+        log_type_and_dir(tables)
+        self.logger.warning(tables.Count)
+        # for index, t in enumerate(tables):
+        #    self.logger.warning(f"{index}: {t}")
+
 
 if __name__ == "__main__":
     ee = ExtendedExcel(autoexit=False)
@@ -139,3 +154,5 @@ if __name__ == "__main__":
     pt = ee.create_pivot_table(
         "data", "test2", "pivoting", ["date"], ["price"], [], fields
     )
+    ee.save_excel()
+    ee.quit_application()
